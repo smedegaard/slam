@@ -58,15 +58,29 @@ class robot:
             return True
 
 
-    # --------
-    # sense: returns x- and y- distances to landmarks within visibility range
-    #        because not all landmarks may be in this range, the list of measurements
-    #        is of variable length. Set measurement_range to -1 if you want all
-    #        landmarks to be visible at all times
-    #
+    def calculate_distance(
+        self,
+        index: int,
+        landmark: list
+    ) -> list:
+        """
+        Takes an index value and a list representing the position of the landmark as `[x, y]`.
+        
+        Returns a list of `[index, delta x, delta y]` if absolute the deltas
+        are less than or equal to `self.measurement_range`.
+        
+        Return `None` if not.
+        """
+
+        dx = landmark[0] - self.x + self.rand() * self.measurement_noise
+        dy = landmark[0] - self.y + self.rand() * self.measurement_noise
+
+        if abs(dx) <= self.measurement_range and abs(dy) <= self.measurement_range:
+            return [index, dx, dy]
+        else:
+            return None
     
-    ## TODO: paste your complete the sense function, here
-    ## make sure the indentation of the code is correct
+
     def sense(self):
         ''' This function does not take in any parameters, instead it references internal variables
             (such as self.landamrks) to measure the distance between the robot and any landmarks
@@ -77,20 +91,13 @@ class robot:
             One item in the returned list should be in the form: [landmark_index, dx, dy].
             '''
            
-        measurements = []
+        measurements = [
+            measurement
+            for index, landmark 
+            in enumerate(self.landmarks)
+            if (measurement := self.calculate_distance(index, landmark))
+        ]
         
-        ## TODO: iterate through all of the landmarks in a world
-        
-        ## TODO: For each landmark
-        ## 1. compute dx and dy, the distances between the robot and the landmark
-        ## 2. account for measurement noise by *adding* a noise component to dx and dy
-        ##    - The noise component should be a random value between [-1.0, 1.0)*measurement_noise
-        ##    - Feel free to use the function self.rand() to help calculate this noise component
-        ## 3. If either of the distances, dx or dy, fall outside of the internal var, measurement_range
-        ##    then we cannot record them; if they do fall in the range, then add them to the measurements list
-        ##    as list.append([index, dx, dy]), this format is important for data creation done later
-        
-        ## TODO: return the final, complete list of measurements
         return measurements
 
 

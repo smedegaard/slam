@@ -55,7 +55,6 @@ def display_world(world_size, position, landmarks=None):
 def make_data(N, num_landmarks, world_size, measurement_range, motion_noise, 
               measurement_noise, distance):
 
-
     # check if data has been made
     complete = False
 
@@ -91,7 +90,6 @@ def make_data(N, num_landmarks, world_size, measurement_range, motion_noise,
 
             # collect/memorize all sensor and motion data
             data.append([Z, [dx, dy]])
-
         # we are done when all landmarks were observed; otherwise re-run
         complete = (sum(seen) == num_landmarks)
 
